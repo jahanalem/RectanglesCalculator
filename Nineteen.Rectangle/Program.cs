@@ -37,56 +37,56 @@ class Program
         return pointsGroupedByY;
     }
 
-    private static Dictionary<int, List<ILine>> CreateLines(Dictionary<int, List<IPoint>> pointsGroupedByY)
+    private static List<ILine> CreateLines(Dictionary<int, List<IPoint>> pointsGroupedByY)
     {
-        var linesGroupedByY = new Dictionary<int, List<ILine>>();
-        var lineId = 0;
+        var lines = new List<ILine>();
+
         foreach (var group in pointsGroupedByY)
         {
             for (int i = 0; i < group.Value.Count; i++)
             {
-                var horizontalLinesAtY = new List<ILine>();
                 for (int j = i + 1; j < group.Value.Count; j++)
                 {
                     var newLine = new Line(group.Value[i], group.Value[j]);
-                    horizontalLinesAtY.Add(newLine);
+                    lines.Add(newLine);
                 }
-                lineId++;
-                linesGroupedByY.Add(lineId, horizontalLinesAtY);
             }
         }
 
-        return linesGroupedByY;
+        return lines;
     }
 
-    private static List<IRectangle> FindPotentialRectangles(Dictionary<int, List<ILine>> linesGroupedByY)
+    private static List<IRectangle> FindPotentialRectangles(List<ILine> lines)
     {
         var potentialRectangles = new List<IRectangle>();
 
-        var linesWithSameYValueList = linesGroupedByY.Where(pair => pair.Value.Count > 0).ToList();
-        foreach (var yValueLinesPair in linesWithSameYValueList)
+        Dictionary<int, List<ILine>> linesGroupedByY = lines.GroupBy(line => line.Point1.Y)
+                                                            .ToDictionary(group => group.Key, group => group.ToList());
+
+        foreach (var baseGroup in linesGroupedByY)
         {
-            foreach (var baseLine in yValueLinesPair.Value)
+            foreach (var baseLine in baseGroup.Value)
             {
                 var baseLineX1 = baseLine.Point1.X;
                 var baseLineX2 = baseLine.Point2.X;
 
-                foreach (var comparisonPair in linesGroupedByY)
+                foreach (var comparisonGroup in linesGroupedByY)
                 {
-                    if (comparisonPair.Key == yValueLinesPair.Key)
+                    if (comparisonGroup.Key == baseGroup.Key)
                     {
                         continue; // Skip lines on the same Y level
                     }
 
-                    foreach (var comparisonLine in comparisonPair.Value)
+                    foreach (var comparisonLine in comparisonGroup.Value)
                     {
                         var comparisonLineX1 = comparisonLine.Point1.X;
                         var comparisonLineX2 = comparisonLine.Point2.X;
 
-                        if ((baseLineX1 == comparisonLineX1 && baseLineX2 == comparisonLineX2) || (baseLineX1 == comparisonLineX2 && baseLineX2 == comparisonLineX1))
+                        if ((baseLineX1 == comparisonLineX1 && baseLineX2 == comparisonLineX2) || 
+                            (baseLineX1 == comparisonLineX2 && baseLineX2 == comparisonLineX1))
                         {
-                            ILine lowerLine = yValueLinesPair.Key < comparisonPair.Key ? baseLine : comparisonLine;
-                            ILine upperLine = yValueLinesPair.Key < comparisonPair.Key ? comparisonLine : baseLine;
+                            ILine lowerLine = baseGroup.Key < comparisonGroup.Key ? baseLine : comparisonLine;
+                            ILine upperLine = baseGroup.Key < comparisonGroup.Key ? comparisonLine : baseLine;
                             potentialRectangles.Add(new Rectangle(lowerLine, upperLine));
                         }
                     }
