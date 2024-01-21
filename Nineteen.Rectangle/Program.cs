@@ -8,18 +8,40 @@ class Program
     {
         var allPoints = Data.POINTS;
 
-        var distinctYValues = allPoints.Select(point => point.Y).Distinct().ToList();
+        var pointsGroupedByY = GroupPointsByY(allPoints);
 
-        var pointsGroupedByYValue = new Dictionary<int, List<IPoint>>();
+        var linesGroupedByY = CreateLines(pointsGroupedByY);
+
+        var potentialRectangles = FindPotentialRectangles(linesGroupedByY);
+
+        var distinctRectangles = DeduplicateRectangles(potentialRectangles);
+
+        Console.WriteLine($"The number of rectangles: {distinctRectangles.Count}");
+        foreach (var rectangle in distinctRectangles)
+        {
+            Console.WriteLine(rectangle.ToString());
+        }
+    }
+
+    private static Dictionary<int, List<IPoint>> GroupPointsByY(List<IPoint> points)
+    {
+        var distinctYValues = points.Select(point => point.Y).Distinct().ToList();
+
+        var pointsGroupedByY = new Dictionary<int, List<IPoint>>();
         foreach (var yValue in distinctYValues)
         {
-            var pointsWithSameY = allPoints.Where(point => point.Y == yValue).ToList();
-            pointsGroupedByYValue.Add(yValue, pointsWithSameY);
+            var pointsWithSameY = points.Where(point => point.Y == yValue).ToList();
+            pointsGroupedByY.Add(yValue, pointsWithSameY);
         }
 
-        var linesGroupedByYValue = new Dictionary<int, List<ILine>>();
+        return pointsGroupedByY;
+    }
+
+    private static Dictionary<int, List<ILine>> CreateLines(Dictionary<int, List<IPoint>> pointsGroupedByY)
+    {
+        var linesGroupedByY = new Dictionary<int, List<ILine>>();
         var lineId = 0;
-        foreach (var group in pointsGroupedByYValue)
+        foreach (var group in pointsGroupedByY)
         {
             for (int i = 0; i < group.Value.Count; i++)
             {
@@ -30,13 +52,18 @@ class Program
                     horizontalLinesAtY.Add(newLine);
                 }
                 lineId++;
-                linesGroupedByYValue.Add(lineId, horizontalLinesAtY);
+                linesGroupedByY.Add(lineId, horizontalLinesAtY);
             }
         }
 
+        return linesGroupedByY;
+    }
+
+    private static List<IRectangle> FindPotentialRectangles(Dictionary<int, List<ILine>> linesGroupedByY)
+    {
         var potentialRectangles = new List<IRectangle>();
 
-        var linesWithSameYValueList = linesGroupedByYValue.Where(pair => pair.Value.Count > 0).ToList();
+        var linesWithSameYValueList = linesGroupedByY.Where(pair => pair.Value.Count > 0).ToList();
         foreach (var yValueLinesPair in linesWithSameYValueList)
         {
             foreach (var baseLine in yValueLinesPair.Value)
@@ -44,7 +71,7 @@ class Program
                 var baseLineX1 = baseLine.Point1.X;
                 var baseLineX2 = baseLine.Point2.X;
 
-                foreach (var comparisonPair in linesGroupedByYValue)
+                foreach (var comparisonPair in linesGroupedByY)
                 {
                     if (comparisonPair.Key == yValueLinesPair.Key)
                     {
@@ -67,11 +94,11 @@ class Program
             }
         }
 
-        var distinctRectangles = potentialRectangles.Distinct().ToList();
-        Console.WriteLine($"The number of rectangles: {distinctRectangles.Count}");
-        foreach (var rectangle in distinctRectangles)
-        {
-            Console.WriteLine(rectangle.ToString());
-        }
+        return potentialRectangles;
+    }
+
+    private static List<IRectangle> DeduplicateRectangles(List<IRectangle> potentialRectangles)
+    {
+        return potentialRectangles.Distinct().ToList();
     }
 }
