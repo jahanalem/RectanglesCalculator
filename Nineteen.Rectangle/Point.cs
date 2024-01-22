@@ -54,7 +54,7 @@ namespace Nineteen.Rectangle
 
         public override string ToString()
         {
-            return $"point({this.X},{this.Y})";
+            return $"({this.X},{this.Y})";
         }
     }
 }

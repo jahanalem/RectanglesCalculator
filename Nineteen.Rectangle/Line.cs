@@ -56,7 +56,7 @@ namespace Nineteen.Rectangle
 
         public override string ToString()
         {
-            return $"line({Point1}, {Point2})";
+            return $"{Point1}, {Point2}";
         }
     }
 }

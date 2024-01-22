@@ -35,7 +35,7 @@ namespace Nineteen.Rectangle
 
                 pointsGroupedByY.Add(yValue, pointsWithSameY);
             }
-            Console.WriteLine($"pointsGroupedByY = {pointsGroupedByY.Count}");
+            Console.WriteLine($"Number of different Y values with associated points = {pointsGroupedByY.Count}");
 
             return pointsGroupedByY;
         }

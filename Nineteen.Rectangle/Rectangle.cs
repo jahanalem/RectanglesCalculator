@@ -53,7 +53,7 @@ namespace Nineteen.Rectangle
 
         public override string ToString()
         {
-            return $"Rectangle: {Line1} and {Line2}";
+            return $"Rectangle: [{Line1}, {Line2}]";
         }
     }
 }
