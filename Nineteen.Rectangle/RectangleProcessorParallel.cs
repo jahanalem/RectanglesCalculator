@@ -16,7 +16,8 @@ namespace Nineteen.Rectangle
 
         public List<IRectangle> Process()
         {
-            var pointsGroupedByY = GroupPointsByY(Points);
+            var sortedPoint = this.Points.OrderBy(p => p.X).ToList();
+            var pointsGroupedByY = GroupPointsByY(sortedPoint);
             var linesGroupedByY = CreateLines(pointsGroupedByY);
             var potentialRectangles = FindPotentialRectangles(linesGroupedByY);
 
@@ -31,6 +32,7 @@ namespace Nineteen.Rectangle
             foreach (var yValue in distinctYValues)
             {
                 var pointsWithSameY = points.Where(point => point.Y == yValue).ToList();
+
                 pointsGroupedByY.Add(yValue, pointsWithSameY);
             }
             Console.WriteLine($"pointsGroupedByY = {pointsGroupedByY.Count}");
@@ -63,6 +65,7 @@ namespace Nineteen.Rectangle
             var linesGroupedByY = lines.GroupBy(line => line.Point1.Y)
                                        .ToDictionary(group => group.Key, group => group.ToList());
 
+            long comparisonCount = 0;
             Parallel.ForEach(linesGroupedByY, baseGroup =>
             {
                 foreach (var baseLine in baseGroup.Value)
@@ -70,7 +73,9 @@ namespace Nineteen.Rectangle
                     var baseLineX1 = baseLine.Point1.X;
                     var baseLineX2 = baseLine.Point2.X;
 
-                    foreach (var comparisonGroup in linesGroupedByY)
+                    var matchingXGroups = GetMatchingXGroups(linesGroupedByY, baseLineX1, baseLineX2);
+
+                    foreach (var comparisonGroup in matchingXGroups)
                     {
                         if (comparisonGroup.Key == baseGroup.Key)
                         {
@@ -79,6 +84,7 @@ namespace Nineteen.Rectangle
 
                         foreach (var comparisonLine in comparisonGroup.Value)
                         {
+                            comparisonCount++;
                             var comparisonLineX1 = comparisonLine.Point1.X;
                             var comparisonLineX2 = comparisonLine.Point2.X;
 
@@ -94,7 +100,29 @@ namespace Nineteen.Rectangle
                 }
             });
 
+            Console.WriteLine($"Number of comparison operations = {comparisonCount}");
+
             return potentialRectangles.ToList();
+        }
+
+        public List<KeyValuePair<int, List<ILine>>> GetMatchingXGroups(
+            Dictionary<int, List<ILine>> linesGroupedByY, int baseLineX1, int baseLineX2)
+        {
+            var matchingXGroups = new List<KeyValuePair<int, List<ILine>>>();
+
+            foreach (var yGroup in linesGroupedByY)
+            {
+                foreach (var line in yGroup.Value)
+                {
+                    if (line.Point1.X == baseLineX1 && line.Point2.X == baseLineX2)
+                    {
+                        matchingXGroups.Add(yGroup);
+                        break; //Break the inner loop when a match is found
+                    }
+                }
+            }
+
+            return matchingXGroups;
         }
     }
 }

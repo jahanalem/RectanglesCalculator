@@ -8,7 +8,7 @@ class Program
 {
     static void Main()
     {
-        var allPoints = Data.POINTS;
+        var allPoints = BigData.POINTS;
 
         Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -16,14 +16,25 @@ class Program
         var distinctRectangles = rectangleProcessor.Process();
 
         Console.WriteLine($"The number of rectangles: {distinctRectangles.Count}");
-        foreach (var rectangle in distinctRectangles)
-        {
-            Console.WriteLine(rectangle.ToString());
-        }
 
-        Console.WriteLine($"The number of rectangles: {distinctRectangles.Count}");
         stopwatch.Stop();
+
         Console.WriteLine($"Execution Time: {stopwatch.ElapsedMilliseconds} ms");
+        Console.WriteLine();
+
+        Console.WriteLine("Would you like to view the results? (y/n)");
+        string userResponse = Console.ReadLine();
+        if (userResponse.Equals("y", StringComparison.OrdinalIgnoreCase))
+        {
+            foreach (var rectangle in distinctRectangles)
+            {
+                Console.WriteLine(rectangle.ToString());
+            }
+        }
+        else
+        {
+            Console.WriteLine("Results are not displayed.");
+        }
     }
 
     private static List<IPoint> GeneratePoints(int count)
