@@ -2,7 +2,7 @@
 {
     public interface ILine
     {
-        IPoint Point1 { get; set; }
-        IPoint Point2 { get; set; }
+        Point Point1 { get; set; }
+        Point Point2 { get; set; }
     }
 }

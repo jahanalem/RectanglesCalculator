@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Nineteen.Rectangle.Core
+﻿namespace Nineteen.Rectangle.Core
 {
     public class RectangleProcessor : BaseRectangleProcessor, IRectangleProcessor
     {
-        public RectangleProcessor(List<IPoint> points) : base(points)
+        public RectangleProcessor(List<Point> points) : base(points)
         {
 
         }
@@ -23,11 +17,11 @@ namespace Nineteen.Rectangle.Core
             return DeduplicateRectangles(potentialRectangles);
         }
 
-        public Dictionary<int, List<IPoint>> GroupPointsByY(List<IPoint> points)
+        public Dictionary<int, List<Point>> GroupPointsByY(List<Point> points)
         {
             var distinctYValues = points.Select(point => point.Y).Distinct().ToList();
 
-            var pointsGroupedByY = new Dictionary<int, List<IPoint>>();
+            var pointsGroupedByY = new Dictionary<int, List<Point>>();
             foreach (var yValue in distinctYValues)
             {
                 var pointsWithSameY = points.Where(point => point.Y == yValue).ToList();
@@ -38,9 +32,9 @@ namespace Nineteen.Rectangle.Core
             return pointsGroupedByY;
         }
 
-        public List<ILine> CreateLines(Dictionary<int, List<IPoint>> pointsGroupedByY)
+        public List<Line> CreateLines(Dictionary<int, List<Point>> pointsGroupedByY)
         {
-            var lines = new List<ILine>();
+            var lines = new List<Line>();
 
             foreach (var group in pointsGroupedByY)
             {
@@ -57,7 +51,7 @@ namespace Nineteen.Rectangle.Core
             return lines;
         }
 
-        public List<IRectangle> FindPotentialRectangles(List<ILine> lines)
+        public List<IRectangle> FindPotentialRectangles(List<Line> lines)
         {
             var potentialRectangles = new List<IRectangle>();
 
@@ -91,8 +85,8 @@ namespace Nineteen.Rectangle.Core
                             if (baseLineX1 == comparisonLineX1 && baseLineX2 == comparisonLineX2 ||
                                 baseLineX1 == comparisonLineX2 && baseLineX2 == comparisonLineX1)
                             {
-                                ILine lowerLine = baseGroup.Key < comparisonGroup.Key ? baseLine : comparisonLine;
-                                ILine upperLine = baseGroup.Key < comparisonGroup.Key ? comparisonLine : baseLine;
+                                Line lowerLine = baseGroup.Key < comparisonGroup.Key ? baseLine : comparisonLine;
+                                Line upperLine = baseGroup.Key < comparisonGroup.Key ? comparisonLine : baseLine;
                                 potentialRectangles.Add(new Rectangle(lowerLine, upperLine));
                             }
                         }
@@ -105,10 +99,10 @@ namespace Nineteen.Rectangle.Core
             return potentialRectangles;
         }
 
-        public List<KeyValuePair<int, List<ILine>>> GetMatchingXGroups(
-            Dictionary<int, List<ILine>> linesGroupedByY, int baseLineX1, int baseLineX2)
+        public List<KeyValuePair<int, List<Line>>> GetMatchingXGroups(
+            Dictionary<int, List<Line>> linesGroupedByY, int baseLineX1, int baseLineX2)
         {
-            var matchingXGroups = new List<KeyValuePair<int, List<ILine>>>();
+            var matchingXGroups = new List<KeyValuePair<int, List<Line>>>();
 
             foreach (var yGroup in linesGroupedByY)
             {

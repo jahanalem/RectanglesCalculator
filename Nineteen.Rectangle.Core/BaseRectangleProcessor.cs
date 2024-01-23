@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Nineteen.Rectangle.Core
+﻿namespace Nineteen.Rectangle.Core
 {
     public abstract class BaseRectangleProcessor
     {
-        public List<IPoint> Points { get; set; }
+        public List<Point> Points { get; set; }
 
-        public BaseRectangleProcessor(List<IPoint> points)
+        public BaseRectangleProcessor(List<Point> points)
         {
             Points = points;
         }

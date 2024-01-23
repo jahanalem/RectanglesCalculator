@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Nineteen.Rectangle.Core
+﻿namespace Nineteen.Rectangle.Core
 {
     public class Point : IPoint, IEquatable<IPoint>
     {
+        public Point() { }
+
         public Point(int v1, int v2)
         {
             X = v1;
@@ -39,7 +35,7 @@ namespace Nineteen.Rectangle.Core
                 return true;
             }
 
-            if (obj is IPoint otherPoint)
+            if (obj is Point otherPoint)
             {
                 return Equals(otherPoint);
             }

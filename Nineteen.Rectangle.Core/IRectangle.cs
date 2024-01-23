@@ -2,8 +2,8 @@
 {
     public interface IRectangle
     {
-        ILine Line1 { get; set; }
-        ILine Line2 { get; set; }
-        IEnumerable<IPoint> GetOrderedPoints();
+        Line Line1 { get; set; }
+        Line Line2 { get; set; }
+        IEnumerable<Point> GetOrderedPoints();
     }
 }

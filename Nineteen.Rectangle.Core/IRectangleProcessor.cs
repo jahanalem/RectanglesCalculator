@@ -2,10 +2,10 @@
 {
     public interface IRectangleProcessor
     {
-        List<ILine> CreateLines(Dictionary<int, List<IPoint>> pointsGroupedByY);
-        List<IRectangle> FindPotentialRectangles(List<ILine> lines);
-        Dictionary<int, List<IPoint>> GroupPointsByY(List<IPoint> points);
+        List<Line> CreateLines(Dictionary<int, List<Point>> pointsGroupedByY);
+        List<IRectangle> FindPotentialRectangles(List<Line> lines);
+        Dictionary<int, List<Point>> GroupPointsByY(List<Point> points);
         List<IRectangle> Process();
-        List<KeyValuePair<int, List<ILine>>> GetMatchingXGroups(Dictionary<int, List<ILine>> linesGroupedByY, int baseLineX1, int baseLineX2);
+        List<KeyValuePair<int, List<Line>>> GetMatchingXGroups(Dictionary<int, List<Line>> linesGroupedByY, int baseLineX1, int baseLineX2);
     }
 }

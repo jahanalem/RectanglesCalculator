@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Nineteen.Rectangle.Core
+﻿namespace Nineteen.Rectangle.Core
 {
     public class Rectangle : IRectangle, IEquatable<IRectangle>
     {
-        public Rectangle(ILine line1, ILine line2)
+        private const int HashSeed = 19;
+        private const int HashFactor = 31;
+
+        public Rectangle(Line line1, Line line2)
         {
             Line1 = line1;
             Line2 = line2;
         }
 
-        public ILine Line1 { get; set; }
-        public ILine Line2 { get; set; }
+        public Line Line1 { get; set; }
+        public Line Line2 { get; set; }
 
-        public IEnumerable<IPoint> GetOrderedPoints()
+        public IEnumerable<Point> GetOrderedPoints()
         {
             return new[] { Line1.Point1, Line1.Point2, Line2.Point1, Line2.Point2 }
                 .OrderBy(p => p.X)
@@ -42,10 +39,10 @@ namespace Nineteen.Rectangle.Core
         {
             unchecked
             {
-                int hash = 19;
+                int hash = HashSeed;
                 foreach (var point in GetOrderedPoints())
                 {
-                    hash = hash * 31 + point.GetHashCode();
+                    hash = hash * HashFactor + point.GetHashCode();
                 }
                 return hash;
             }

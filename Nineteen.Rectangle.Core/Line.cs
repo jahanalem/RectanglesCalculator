@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Nineteen.Rectangle.Core
+﻿namespace Nineteen.Rectangle.Core
 {
-    public class Line : ILine, IEquatable<ILine>
+    public class Line : ILine, IEquatable<Line>
     {
-        public Line(IPoint point1, IPoint point2)
+        public Line(Point point1, Point point2)
         {
             Point1 = point1;
             Point2 = point2;
         }
 
-        public IPoint Point1 { get; set; }
-        public IPoint Point2 { get; set; }
+        public Point Point1 { get; set; }
+        public Point Point2 { get; set; }
 
-        public bool Equals(ILine? other)
+        public bool Equals(Line? other)
         {
             if (other == null)
             {
@@ -38,7 +32,7 @@ namespace Nineteen.Rectangle.Core
                 return true;
             }
 
-            if (obj is ILine otherLine)
+            if (obj is Line otherLine)
             {
                 return Equals(otherLine);
             }

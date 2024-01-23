@@ -11,4 +11,22 @@
     <ProjectReference Include="..\Nineteen.Rectangle.Core\Nineteen.Rectangle.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="10000_points.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data_points.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data_points_10000.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="data_points_16.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
