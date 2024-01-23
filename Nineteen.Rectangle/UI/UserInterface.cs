@@ -50,9 +50,10 @@ namespace Nineteen.Rectangle.ConsoleApp.UI
             PrintInColor("Processing started. Please wait...", ConsoleColor.Yellow, true);
         }
 
-        public static void PrintResultsSummary(int totalPoints, int totalRectangles, long executionTime)
+        public static void PrintResultsSummary(long totalPoints, long allDistinctPoints, int totalRectangles, long executionTime)
         {
-            PrintInColor($"Total number of points loaded: {totalPoints}", ConsoleColor.Blue, true);
+            PrintInColor($"Total number of points loaded: {totalPoints}", ConsoleColor.Blue);
+            PrintInColor($"Total number of distinct points: {allDistinctPoints}", ConsoleColor.Blue, true);
             PrintInColor($"The number of rectangles = {totalRectangles}", ConsoleColor.Green);
             PrintInColor($"Execution Time: {executionTime} ms", ConsoleColor.Cyan);
             Console.WriteLine();

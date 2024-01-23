@@ -1,5 +1,6 @@
 ﻿using Nineteen.Rectangle.ConsoleApp.UI;
 using Nineteen.Rectangle.Core;
+using System.Linq;
 using System.Text.Json;
 
 namespace Nineteen.Rectangle.ConsoleApp.IO
@@ -53,6 +54,21 @@ namespace Nineteen.Rectangle.ConsoleApp.IO
                     writer.WriteLine(rectangle.ToString());
                 }
             }
+        }
+
+        public static void SavePointsToFile(List<Point> points, string filePath)
+        {
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string json = JsonSerializer.Serialize(points, options);
+            File.WriteAllText(filePath, json);
+        }
+
+        public static void SaveRectanglesToJson(List<IRectangle> rectangles, string filePath)
+        {
+            var rectangleModels = rectangles.Select(rect => new RectangleJsonModel(rect)).ToList();
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string json = JsonSerializer.Serialize(rectangleModels, options);
+            File.WriteAllText(filePath, json);
         }
     }
 }

@@ -4,7 +4,7 @@ namespace Nineteen.Rectangle
 {
     public static class Data
     {
-        public static List<IPoint> POINTS = new List<IPoint>
+        public static List<Point> POINTS = new List<Point>
         {
           new Point(7,1),
           new Point(2,2),

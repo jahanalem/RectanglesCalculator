@@ -1,7 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
+using Nineteen.Rectangle;
 using Nineteen.Rectangle.ConsoleApp.IO;
 using Nineteen.Rectangle.ConsoleApp.Processing;
 using Nineteen.Rectangle.ConsoleApp.UI;
+using Nineteen.Rectangle.Core;
 using System.Diagnostics;
 
 class Program
@@ -11,6 +13,9 @@ class Program
         UserInterface.WelcomeMessage();
 
         var allPoints = FileOperations.GetPointsFromFile("data_points.json");
+        //var allPoints = BigData.POINTS;
+        //var dataSaver = new DataSaver();
+        //var allPoints = TestDataGenerator.GeneratePoints(1000, dataSaver: dataSaver);
 
         if (allPoints.Count == 0)
         {
@@ -18,12 +23,16 @@ class Program
             return;
         }
 
+        var allDistinctPoints = allPoints.Distinct().ToList();
         UserInterface.ProcessingStartMessage();
         Stopwatch stopwatch = Stopwatch.StartNew();
-        var distinctRectangles = DataProcessor.ProcessData(allPoints);
+        var distinctRectangles = DataProcessor.ProcessData(allDistinctPoints);
         stopwatch.Stop();
 
-        UserInterface.PrintResultsSummary(allPoints.Count, distinctRectangles.Count, stopwatch.ElapsedMilliseconds);
+        string jsonFilePath = "rectangles.json";
+        FileOperations.SaveRectanglesToJson(distinctRectangles, jsonFilePath);
+
+        UserInterface.PrintResultsSummary(allPoints.LongCount(), allDistinctPoints.LongCount(), distinctRectangles.Count, stopwatch.ElapsedMilliseconds);
 
         UserInterface.AskToSaveResults(distinctRectangles);
         UserInterface.AskToDisplayResults(distinctRectangles);

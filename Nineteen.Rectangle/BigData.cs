@@ -4,7 +4,7 @@ namespace Nineteen.Rectangle
 {
     public static class BigData
     {
-        public static List<IPoint> POINTS = new List<IPoint>
+        public static List<Point> POINTS = new List<Point>
         {
             new Point(359,49),
             new Point(246,39),
