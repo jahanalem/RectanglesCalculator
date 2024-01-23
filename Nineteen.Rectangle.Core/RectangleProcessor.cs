@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nineteen.Rectangle
+namespace Nineteen.Rectangle.Core
 {
     public class RectangleProcessor : BaseRectangleProcessor, IRectangleProcessor
     {
@@ -15,7 +15,7 @@ namespace Nineteen.Rectangle
 
         public List<IRectangle> Process()
         {
-            var sortedPoints = this.Points.OrderBy(p => p.X).ToList();
+            var sortedPoints = Points.OrderBy(p => p.X).ToList();
             var pointsGroupedByY = GroupPointsByY(sortedPoints);
             var linesGroupedByY = CreateLines(pointsGroupedByY);
             var potentialRectangles = FindPotentialRectangles(linesGroupedByY);
@@ -88,8 +88,8 @@ namespace Nineteen.Rectangle
                             var comparisonLineX1 = comparisonLine.Point1.X;
                             var comparisonLineX2 = comparisonLine.Point2.X;
 
-                            if ((baseLineX1 == comparisonLineX1 && baseLineX2 == comparisonLineX2) ||
-                                (baseLineX1 == comparisonLineX2 && baseLineX2 == comparisonLineX1))
+                            if (baseLineX1 == comparisonLineX1 && baseLineX2 == comparisonLineX2 ||
+                                baseLineX1 == comparisonLineX2 && baseLineX2 == comparisonLineX1)
                             {
                                 ILine lowerLine = baseGroup.Key < comparisonGroup.Key ? baseLine : comparisonLine;
                                 ILine upperLine = baseGroup.Key < comparisonGroup.Key ? comparisonLine : baseLine;

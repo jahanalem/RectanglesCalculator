@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nineteen.Rectangle", "Nineteen.Rectangle.csproj", "{7A4ECC9F-B050-4C13-98C2-D811DC39C6CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nineteen.Rectangle.ConsoleApp", "Nineteen.Rectangle.ConsoleApp.csproj", "{7A4ECC9F-B050-4C13-98C2-D811DC39C6CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nineteen.Rectangle.Core", "..\Nineteen.Rectangle.Core\Nineteen.Rectangle.Core.csproj", "{6DA6561D-5BE0-4AD6-92AC-75FCB7545991}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{7A4ECC9F-B050-4C13-98C2-D811DC39C6CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A4ECC9F-B050-4C13-98C2-D811DC39C6CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A4ECC9F-B050-4C13-98C2-D811DC39C6CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DA6561D-5BE0-4AD6-92AC-75FCB7545991}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DA6561D-5BE0-4AD6-92AC-75FCB7545991}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DA6561D-5BE0-4AD6-92AC-75FCB7545991}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DA6561D-5BE0-4AD6-92AC-75FCB7545991}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

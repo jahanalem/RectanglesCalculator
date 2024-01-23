@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nineteen.Rectangle
+namespace Nineteen.Rectangle.Core
 {
     public abstract class BaseRectangleProcessor
     {

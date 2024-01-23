@@ -1,5 +1,4 @@
-﻿
-namespace Nineteen.Rectangle
+﻿namespace Nineteen.Rectangle.Core
 {
     public interface IRectangleProcessor
     {

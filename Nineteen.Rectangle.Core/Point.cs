@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nineteen.Rectangle
+namespace Nineteen.Rectangle.Core
 {
     public class Point : IPoint, IEquatable<IPoint>
     {
         public Point(int v1, int v2)
         {
-            this.X = v1;
-            this.Y = v2;
+            X = v1;
+            Y = v2;
         }
 
         public int X { get; set; }
@@ -54,7 +54,7 @@ namespace Nineteen.Rectangle
 
         public override string ToString()
         {
-            return $"({this.X},{this.Y})";
+            return $"({X},{Y})";
         }
     }
 }

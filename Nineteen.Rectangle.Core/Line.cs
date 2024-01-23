@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nineteen.Rectangle
+namespace Nineteen.Rectangle.Core
 {
     public class Line : ILine, IEquatable<ILine>
     {
         public Line(IPoint point1, IPoint point2)
         {
-            this.Point1 = point1;
-            this.Point2 = point2;
+            Point1 = point1;
+            Point2 = point2;
         }
 
         public IPoint Point1 { get; set; }
@@ -24,7 +24,7 @@ namespace Nineteen.Rectangle
                 return false;
             }
 
-            return (Point1.Equals(other.Point1) && Point2.Equals(other.Point2)) || (Point1.Equals(other.Point2) && Point2.Equals(other.Point1));
+            return Point1.Equals(other.Point1) && Point2.Equals(other.Point2) || Point1.Equals(other.Point2) && Point2.Equals(other.Point1);
         }
         public override bool Equals(object obj)
         {

@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Nineteen.Rectangle;
+using Nineteen.Rectangle.Core;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
