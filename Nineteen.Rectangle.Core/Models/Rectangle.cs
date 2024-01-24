@@ -1,4 +1,4 @@
-﻿namespace Nineteen.Rectangle.Core
+﻿namespace Nineteen.Rectangle.Core.Models
 {
     public class Rectangle : IRectangle, IEquatable<IRectangle>
     {
@@ -30,7 +30,7 @@
 
             return GetOrderedPoints().SequenceEqual(other.GetOrderedPoints());
         }
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return Equals(obj as IRectangle);
         }

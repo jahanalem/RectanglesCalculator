@@ -1,4 +1,6 @@
-﻿namespace Nineteen.Rectangle.Core
+﻿using Nineteen.Rectangle.Core.Models;
+
+namespace Nineteen.Rectangle.Core.Processors
 {
     public class RectangleProcessor : BaseRectangleProcessor, IRectangleProcessor
     {
@@ -87,7 +89,7 @@
                             {
                                 Line lowerLine = baseGroup.Key < comparisonGroup.Key ? baseLine : comparisonLine;
                                 Line upperLine = baseGroup.Key < comparisonGroup.Key ? comparisonLine : baseLine;
-                                potentialRectangles.Add(new Rectangle(lowerLine, upperLine));
+                                potentialRectangles.Add(new Models.Rectangle(lowerLine, upperLine));
                             }
                         }
                     }

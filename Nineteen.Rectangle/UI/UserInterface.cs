@@ -1,5 +1,5 @@
 ﻿using Nineteen.Rectangle.ConsoleApp.IO;
-using Nineteen.Rectangle.Core;
+using Nineteen.Rectangle.Core.Models;
 using System.Text;
 
 namespace Nineteen.Rectangle.ConsoleApp.UI
@@ -71,14 +71,16 @@ namespace Nineteen.Rectangle.ConsoleApp.UI
 
         public static void AskToSaveResults(List<IRectangle> rectangles)
         {
+            const string ResultsFilePath = "results.txt";
+
             PrintInColor("Would you like to save the results to a file? (y/n)", ConsoleColor.Magenta);
             string saveResponse = Console.ReadLine() ?? string.Empty;
 
             if (saveResponse.Equals("y", StringComparison.OrdinalIgnoreCase))
             {
-                string filePath = "results.txt";
-                FileOperations.SaveResultsToFile(rectangles, filePath);
-                PrintInColor($"Results saved to {filePath}", ConsoleColor.Green);
+                var fileOperations = new FileOperations();
+                fileOperations.SaveResultsToFile(rectangles, ResultsFilePath);
+                PrintInColor($"Results saved to {ResultsFilePath}", ConsoleColor.Green);
             }
         }
 

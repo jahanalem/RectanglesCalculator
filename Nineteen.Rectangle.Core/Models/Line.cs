@@ -1,4 +1,4 @@
-﻿namespace Nineteen.Rectangle.Core
+﻿namespace Nineteen.Rectangle.Core.Models
 {
     public class Line : ILine, IEquatable<Line>
     {
@@ -20,7 +20,7 @@
 
             return Point1.Equals(other.Point1) && Point2.Equals(other.Point2) || Point1.Equals(other.Point2) && Point2.Equals(other.Point1);
         }
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null)
             {

@@ -1,4 +1,6 @@
-﻿namespace Nineteen.Rectangle.Core
+﻿using Nineteen.Rectangle.Core.Models;
+
+namespace Nineteen.Rectangle.Core.Processors
 {
     public abstract class BaseRectangleProcessor
     {

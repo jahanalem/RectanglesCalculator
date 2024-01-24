@@ -1,4 +1,4 @@
-﻿namespace Nineteen.Rectangle.Core
+﻿namespace Nineteen.Rectangle.Core.Models
 {
     public interface IPoint
     {

@@ -1,4 +1,4 @@
-﻿namespace Nineteen.Rectangle.Core
+﻿namespace Nineteen.Rectangle.Core.Models
 {
     public class Point : IPoint, IEquatable<IPoint>
     {

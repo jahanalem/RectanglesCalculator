@@ -3,7 +3,7 @@ using Nineteen.Rectangle;
 using Nineteen.Rectangle.ConsoleApp.IO;
 using Nineteen.Rectangle.ConsoleApp.Processing;
 using Nineteen.Rectangle.ConsoleApp.UI;
-using Nineteen.Rectangle.Core;
+using Nineteen.Rectangle.Core.Utilities;
 using System.Diagnostics;
 
 class Program
@@ -11,11 +11,12 @@ class Program
     static void Main()
     {
         UserInterface.WelcomeMessage();
+        var fileOperations = new FileOperations();
 
-        var allPoints = FileOperations.GetPointsFromFile("data_points.json");
+        var allPoints = fileOperations.GetPointsFromFile("data_points.json");
         //var allPoints = BigData.POINTS;
         //var dataSaver = new DataSaver();
-        //var allPoints = TestDataGenerator.GeneratePoints(1000, dataSaver: dataSaver);
+        //var allPoints = TestDataGenerator.GeneratePoints(1000);
 
         if (allPoints.Count == 0)
         {
@@ -30,7 +31,7 @@ class Program
         stopwatch.Stop();
 
         string jsonFilePath = "rectangles.json";
-        FileOperations.SaveRectanglesToJson(distinctRectangles, jsonFilePath);
+        fileOperations.SaveRectanglesToJson(distinctRectangles, jsonFilePath);
 
         UserInterface.PrintResultsSummary(allPoints.LongCount(), allDistinctPoints.LongCount(), distinctRectangles.Count, stopwatch.ElapsedMilliseconds);
 

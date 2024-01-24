@@ -1,4 +1,5 @@
-﻿using Nineteen.Rectangle.Core;
+﻿using Nineteen.Rectangle.Core.Models;
+using Nineteen.Rectangle.Core.Processors;
 
 namespace Nineteen.Rectangle.ConsoleApp.Processing
 {

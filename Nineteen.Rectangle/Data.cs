@@ -1,4 +1,4 @@
-﻿using Nineteen.Rectangle.Core;
+﻿using Nineteen.Rectangle.Core.Models;
 
 namespace Nineteen.Rectangle
 {

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
+using Nineteen.Rectangle.Core.Models;
 
-namespace Nineteen.Rectangle.Core
+namespace Nineteen.Rectangle.Core.Processors
 {
     public class RectangleProcessorParallel : BaseRectangleProcessor, IRectangleProcessor
     {
@@ -88,7 +89,7 @@ namespace Nineteen.Rectangle.Core
                             {
                                 Line lowerLine = baseGroup.Key < comparisonGroup.Key ? baseLine : comparisonLine;
                                 Line upperLine = baseGroup.Key < comparisonGroup.Key ? comparisonLine : baseLine;
-                                potentialRectangles.Add(new Rectangle(lowerLine, upperLine));
+                                potentialRectangles.Add(new Models.Rectangle(lowerLine, upperLine));
                             }
                         }
                     }
