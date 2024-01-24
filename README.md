@@ -1,2 +1,3 @@
 The result:
-![rectangles](https://github.com/jahanalem/RectanglesCalculator/assets/3236721/af5ef926-8e91-4def-8646-0b31e21a9dac)
+
+![rectangles](https://github.com/jahanalem/RectanglesCalculator/assets/3236721/c27c5a69-cdf2-4d54-9469-65fc136e85ee)
