@@ -1,4 +1,25 @@
-The result:
+# RectanglesCalculator
+
+## Description
+The RectanglesCalculator is an advanced C# application designed for efficiently identifying and enumerating rectangles formed from a given set of points. It excels in spatial analysis and graphical calculations through optimized algorithms and parallel processing.
+
+## Key Features
+- **Data Optimization**: Cleanses input data by removing duplicate points to ensure accuracy and improve efficiency.
+- **Algorithmic Precision**: Employs a specialized algorithm for sorting and grouping points, creating lines, and identifying potential rectangles.
+- **Parallel Processing**: Utilizes multi-threading to enhance performance in line creation and rectangle detection.
+- **Robust Performance**: Capable of efficiently handling large datasets while maintaining high accuracy and performance.
+- **User-Friendly Interface**: Features a clear and interactive console interface for easy data loading, processing, and result viewing.
+- **Versatility**: Ideal for various applications in geometric calculations and spatial data analysis.
+
+## Technologies Used
+- C#
+- .NET Core
+- Concurrent Collections
+- LINQ
+
+## Project Outcome
+RectanglesCalculator represents a successful development of a versatile tool for analyzing complex spatial data. It demonstrates significant reductions in processing time and improvements in accuracy for rectangle detection. This project highlights my skills in handling complex algorithms, parallel processing, and user interface design in software development.
+
 
 ![rectangles](https://github.com/jahanalem/RectanglesCalculator/assets/3236721/c27c5a69-cdf2-4d54-9469-65fc136e85ee)
 
