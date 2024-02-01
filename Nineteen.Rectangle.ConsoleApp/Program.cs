@@ -33,9 +33,9 @@ class Program
 
     private static List<Point> LoadPoints()
     {
-        var allPoints = fileOperations.GetPointsFromFile(DataFilePath);
+        //var allPoints = fileOperations.GetPointsFromFile(DataFilePath);
         // Alternative data sources could be uncommented as needed
-        // var allPoints = BigData.POINTS;
+         var allPoints = BigData.POINTS;
         // var allPoints = TestDataGenerator.GeneratePoints(1000);
 
         return allPoints;

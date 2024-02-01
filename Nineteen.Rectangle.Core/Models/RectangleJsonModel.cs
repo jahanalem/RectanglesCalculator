@@ -7,6 +7,10 @@
         public Point Point3 { get; set; }
         public Point Point4 { get; set; }
 
+        public RectangleJsonModel()
+        {
+        }
+
         public RectangleJsonModel(IRectangle rect)
         {
             var points = rect.GetOrderedPoints().ToList();

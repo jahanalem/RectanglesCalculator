@@ -50,7 +50,7 @@
 
         public override string ToString()
         {
-            return $"Rectangle: [{Line1}, {Line2}]";
+            return $"[{Line1}, {Line2}]";
         }
     }
 }

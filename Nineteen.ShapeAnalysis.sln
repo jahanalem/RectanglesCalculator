@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Console Application", "Cons
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{B325F8FD-4732-476E-A54B-78DACEC5CB05}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{6F00EA22-329D-4F8F-8939-343C15B2E90C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nineteen.Rectangle.Test", "Nineteen.Rectangle.Test\Nineteen.Rectangle.Test.csproj", "{7FF74806-20CB-4CCE-8163-A813B2857EC0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +29,10 @@ Global
 		{6DA6561D-5BE0-4AD6-92AC-75FCB7545991}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DA6561D-5BE0-4AD6-92AC-75FCB7545991}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DA6561D-5BE0-4AD6-92AC-75FCB7545991}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FF74806-20CB-4CCE-8163-A813B2857EC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FF74806-20CB-4CCE-8163-A813B2857EC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FF74806-20CB-4CCE-8163-A813B2857EC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FF74806-20CB-4CCE-8163-A813B2857EC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +40,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{7A4ECC9F-B050-4C13-98C2-D811DC39C6CD} = {B40FC879-C6AA-41A2-BC0F-27442335C7FD}
 		{6DA6561D-5BE0-4AD6-92AC-75FCB7545991} = {B325F8FD-4732-476E-A54B-78DACEC5CB05}
+		{7FF74806-20CB-4CCE-8163-A813B2857EC0} = {6F00EA22-329D-4F8F-8939-343C15B2E90C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {ABA82322-FC1F-459B-8C25-F622183773AE}
