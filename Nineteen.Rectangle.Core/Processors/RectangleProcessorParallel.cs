@@ -57,7 +57,6 @@ namespace Nineteen.Rectangle.Core.Processors
 
         public List<IRectangle> FindPotentialRectangles(List<Line> lines)
         {
-            //var potentialRectangles = new ConcurrentBag<IRectangle>();
             var potentialRectangles = new ConcurrentDictionary<IRectangle, bool>();
 
             var linesGroupedByY = lines.GroupBy(line => line.Point1.Y)
@@ -75,9 +74,9 @@ namespace Nineteen.Rectangle.Core.Processors
 
                     foreach (var comparisonGroup in matchingXGroups)
                     {
-                        if (comparisonGroup.Key == baseGroup.Key)
+                        if (comparisonGroup.Key <= baseGroup.Key)
                         {
-                            continue; // Skip lines on the same Y level
+                            continue; // Skip lines on the same Y level or smaller 
                         }
 
                         foreach (var comparisonLine in comparisonGroup.Value)

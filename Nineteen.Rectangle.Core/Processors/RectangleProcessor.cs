@@ -73,9 +73,9 @@ namespace Nineteen.Rectangle.Core.Processors
 
                     foreach (var comparisonGroup in matchingXGroups)
                     {
-                        if (comparisonGroup.Key == baseGroup.Key)
+                        if (comparisonGroup.Key <= baseGroup.Key)
                         {
-                            continue; // Skip lines on the same Y level
+                            continue; // Skip lines on the same Y level or smaller
                         }
 
                         foreach (var comparisonLine in comparisonGroup.Value)
