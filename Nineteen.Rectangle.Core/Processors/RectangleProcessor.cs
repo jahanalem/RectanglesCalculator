@@ -16,7 +16,7 @@ namespace Nineteen.Rectangle.Core.Processors
             var linesGroupedByY = CreateLines(pointsGroupedByY);
             var potentialRectangles = FindPotentialRectangles(linesGroupedByY);
 
-            return DeduplicateRectangles(potentialRectangles);
+            return potentialRectangles;
         }
 
         public Dictionary<int, List<Point>> GroupPointsByY(List<Point> points)
@@ -55,7 +55,7 @@ namespace Nineteen.Rectangle.Core.Processors
 
         public List<IRectangle> FindPotentialRectangles(List<Line> lines)
         {
-            var potentialRectangles = new List<IRectangle>();
+            var potentialRectangles = new HashSet<IRectangle>();
 
             var linesGroupedByY = lines.GroupBy(line => line.Point1.Y)
                                                                 .ToDictionary(group => group.Key, group => group.ToList());
@@ -98,7 +98,7 @@ namespace Nineteen.Rectangle.Core.Processors
 
             Console.WriteLine($"Number of comparison operations = {comparisonCount}");
 
-            return potentialRectangles;
+            return potentialRectangles.ToList();
         }
 
         public List<KeyValuePair<int, List<Line>>> GetMatchingXGroups(

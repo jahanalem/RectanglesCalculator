@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 class Program
 {
-    private static readonly string DataFilePath = "data_points.json";
+    private static readonly string DataFilePath = "data_points_10000.json";
     private static readonly string JsonFilePath = "rectangles.json";
     private static readonly FileOperations fileOperations = new FileOperations();
 
@@ -33,9 +33,9 @@ class Program
 
     private static List<Point> LoadPoints()
     {
-        //var allPoints = fileOperations.GetPointsFromFile(DataFilePath);
+        var allPoints = fileOperations.GetPointsFromFile(DataFilePath);
         // Alternative data sources could be uncommented as needed
-         var allPoints = BigData.POINTS;
+        // var allPoints = BigData.POINTS;
         // var allPoints = TestDataGenerator.GeneratePoints(1000);
 
         return allPoints;

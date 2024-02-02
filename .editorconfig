@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# xUnit2012: Do not use boolean check to check if a value exists in a collection
+dotnet_diagnostic.xUnit2012.severity = none
