@@ -1,7 +1,7 @@
 # RectanglesCalculator
 
 ## Description
-The RectanglesCalculator is an advanced C# application designed for efficiently identifying and enumerating rectangles formed from a given set of points. It excels in spatial analysis and graphical calculations through optimized algorithms and parallel processing.
+The RectanglesCalculator is an advanced C# application designed for efficiently identifying and enumerating rectangles formed from a given set of points.
 
 ## Key Features
 - **Data Optimization**: Cleanses input data by removing duplicate points to ensure accuracy and improve efficiency.
