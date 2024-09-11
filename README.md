@@ -9,7 +9,6 @@ The RectanglesCalculator is an advanced C# application designed for efficiently 
 - **Parallel Processing**: Utilizes multi-threading to enhance performance in line creation and rectangle detection.
 - **Robust Performance**: Capable of efficiently handling large datasets while maintaining high accuracy and performance.
 - **User-Friendly Interface**: Features a clear and interactive console interface for easy data loading, processing, and result viewing.
-- **Versatility**: Ideal for various applications in geometric calculations and spatial data analysis.
 
 ## Technologies Used
 - C#
