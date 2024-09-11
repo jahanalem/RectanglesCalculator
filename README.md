@@ -17,8 +17,7 @@ The RectanglesCalculator is an advanced C# application designed for efficiently 
 - LINQ
 
 ## Project Outcome
-RectanglesCalculator represents a successful development of a versatile tool for analyzing complex spatial data. It demonstrates significant reductions in processing time and improvements in accuracy for rectangle detection. This project highlights my skills in handling complex algorithms, parallel processing, and user interface design in software development.
-
+RectanglesCalculator is a useful tool I developed to analyze complex data about shapes. It speeds up the process of finding rectangles and makes it more accurate. This project shows my skills in working with advanced algorithms, parallel programming, and designing user-friendly software.
 
 ![rectangles](https://github.com/jahanalem/RectanglesCalculator/assets/3236721/c27c5a69-cdf2-4d54-9469-65fc136e85ee)
 
