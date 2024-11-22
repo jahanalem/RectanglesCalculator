@@ -8,6 +8,7 @@ namespace Nineteen.Rectangle.ConsoleApp.Processing
         public static List<IRectangle> ProcessData(List<Point> points)
         {
             var rectangleProcessor = new RectangleProcessorParallel(points);
+            //var rectangleProcessor = new RectangleProcessor(points);
 
             return rectangleProcessor.Process();
         }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Runtime.InteropServices;
 using Nineteen.Rectangle.Core.Models;
 
 namespace Nineteen.Rectangle.Core.Processors
@@ -22,31 +23,36 @@ namespace Nineteen.Rectangle.Core.Processors
 
         public Dictionary<int, List<Point>> GroupPointsByY(List<Point> points)
         {
-            var distinctYValues = points.Select(point => point.Y).Distinct().ToList();
-
             var pointsGroupedByY = new Dictionary<int, List<Point>>();
-            foreach (var yValue in distinctYValues)
+            var spanPoints = CollectionsMarshal.AsSpan(points);
+
+            foreach (var point in spanPoints)
             {
-                var pointsWithSameY = points.Where(point => point.Y == yValue).ToList();
-
-                pointsGroupedByY.Add(yValue, pointsWithSameY);
+                if (!pointsGroupedByY.TryGetValue(point.Y, out var group))
+                {
+                    group = new List<Point>();
+                    pointsGroupedByY[point.Y] = group;
+                }
+                group.Add(point);
             }
-            Console.WriteLine($"Number of different Y values with associated points = {pointsGroupedByY.Count}");
 
+            Console.WriteLine($"Number of different Y values with associated points = {pointsGroupedByY.Count}");
             return pointsGroupedByY;
         }
+
 
         public List<Line> CreateLines(Dictionary<int, List<Point>> pointsGroupedByY)
         {
             var lines = new ConcurrentBag<Line>();
 
-            Parallel.ForEach(pointsGroupedByY, group =>
+            Parallel.ForEach(pointsGroupedByY.Values, group =>
             {
-                for (int i = 0; i < group.Value.Count; i++)
+                var spanGroup = CollectionsMarshal.AsSpan(group);
+                for (int i = 0; i < spanGroup.Length; i++)
                 {
-                    for (int j = i + 1; j < group.Value.Count; j++)
+                    for (int j = i + 1; j < spanGroup.Length; j++)
                     {
-                        var newLine = new Line(group.Value[i], group.Value[j]);
+                        var newLine = new Line(spanGroup[i], spanGroup[j]);
                         lines.Add(newLine);
                     }
                 }
@@ -79,7 +85,8 @@ namespace Nineteen.Rectangle.Core.Processors
                             continue; // Skip lines on the same Y level or smaller 
                         }
 
-                        foreach (var comparisonLine in comparisonGroup.Value)
+                        var comparisonLines = comparisonGroup.Value;
+                        foreach (var comparisonLine in comparisonLines)
                         {
                             comparisonCount++;
                             var comparisonLineX1 = comparisonLine.Point1.X;

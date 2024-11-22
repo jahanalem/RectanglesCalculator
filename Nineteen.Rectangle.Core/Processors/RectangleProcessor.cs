@@ -1,4 +1,5 @@
 ﻿using Nineteen.Rectangle.Core.Models;
+using System.Runtime.InteropServices;
 
 namespace Nineteen.Rectangle.Core.Processors
 {
@@ -21,16 +22,20 @@ namespace Nineteen.Rectangle.Core.Processors
 
         public Dictionary<int, List<Point>> GroupPointsByY(List<Point> points)
         {
-            var distinctYValues = points.Select(point => point.Y).Distinct().ToList();
-
             var pointsGroupedByY = new Dictionary<int, List<Point>>();
-            foreach (var yValue in distinctYValues)
-            {
-                var pointsWithSameY = points.Where(point => point.Y == yValue).ToList();
-                pointsGroupedByY.Add(yValue, pointsWithSameY);
-            }
-            Console.WriteLine($"Number of different Y values with associated points = {pointsGroupedByY.Count}");
+            var spanPoints = CollectionsMarshal.AsSpan(points);
 
+            foreach (var point in spanPoints)
+            {
+                if (!pointsGroupedByY.TryGetValue(point.Y, out var group))
+                {
+                    group = new List<Point>();
+                    pointsGroupedByY[point.Y] = group;
+                }
+                group.Add(point);
+            }
+
+            Console.WriteLine($"Number of different Y values with associated points = {pointsGroupedByY.Count}");
             return pointsGroupedByY;
         }
 
@@ -38,13 +43,13 @@ namespace Nineteen.Rectangle.Core.Processors
         {
             var lines = new List<Line>();
 
-            foreach (var group in pointsGroupedByY)
+            foreach (var group in pointsGroupedByY.Values)
             {
-                for (int i = 0; i < group.Value.Count; i++)
+                for (int i = 0; i < group.Count; i++)
                 {
-                    for (int j = i + 1; j < group.Value.Count; j++)
+                    for (int j = i + 1; j < group.Count; j++)
                     {
-                        var newLine = new Line(group.Value[i], group.Value[j]);
+                        var newLine = new Line(group[i], group[j]);
                         lines.Add(newLine);
                     }
                 }
@@ -78,7 +83,8 @@ namespace Nineteen.Rectangle.Core.Processors
                             continue; // Skip lines on the same Y level or smaller
                         }
 
-                        foreach (var comparisonLine in comparisonGroup.Value)
+                        var comparisonLines = comparisonGroup.Value;
+                        foreach (var comparisonLine in comparisonLines)
                         {
                             comparisonCount++;
                             var comparisonLineX1 = comparisonLine.Point1.X;

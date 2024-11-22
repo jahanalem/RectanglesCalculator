@@ -13,7 +13,7 @@
 
         public bool Equals(Line? other)
         {
-            if (other == null)
+            if (other is null)
             {
                 return false;
             }
@@ -22,22 +22,7 @@
         }
         public override bool Equals(object? obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj is Line otherLine)
-            {
-                return Equals(otherLine);
-            }
-
-            return false;
+            return ReferenceEquals(this, obj) || (obj is Line otherLine && Equals(otherLine));
         }
 
         public override int GetHashCode()

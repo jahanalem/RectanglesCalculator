@@ -5,6 +5,10 @@
         private const int HashSeed = 19;
         private const int HashFactor = 31;
 
+        private Point[]? _cachedOrderedPoints;
+        private int? _cachedHashCode;
+        private string? _cachedString;
+
         public Rectangle(Line line1, Line line2)
         {
             Line1 = line1;
@@ -16,10 +20,15 @@
 
         public IEnumerable<Point> GetOrderedPoints()
         {
-            return new[] { Line1.Point1, Line1.Point2, Line2.Point1, Line2.Point2 }
-                .OrderBy(p => p.X)
-                .ThenBy(p => p.Y);
+            if (_cachedOrderedPoints != null)
+                return _cachedOrderedPoints;
+
+            _cachedOrderedPoints = new[] { Line1.Point1, Line1.Point2, Line2.Point1, Line2.Point2 };
+            Array.Sort(_cachedOrderedPoints, static (p1, p2) => (p1.X, p1.Y).CompareTo((p2.X, p2.Y)));
+
+            return _cachedOrderedPoints;
         }
+
 
         public bool Equals(IRectangle? other)
         {
@@ -28,7 +37,10 @@
                 return false;
             }
 
-            return GetOrderedPoints().SequenceEqual(other.GetOrderedPoints());
+            var thisPoints = GetOrderedPoints();
+            var otherPoints = other.GetOrderedPoints();
+
+            return thisPoints.SequenceEqual(otherPoints);
         }
         public override bool Equals(object? obj)
         {
@@ -37,6 +49,9 @@
 
         public override int GetHashCode()
         {
+            if (_cachedHashCode.HasValue)
+                return _cachedHashCode.Value;
+
             unchecked
             {
                 int hash = HashSeed;
@@ -44,13 +59,15 @@
                 {
                     hash = hash * HashFactor + point.GetHashCode();
                 }
+                _cachedHashCode = hash;
+
                 return hash;
             }
         }
 
         public override string ToString()
         {
-            return $"[{Line1}, {Line2}]";
+            return _cachedString ??= $"[{Line1}, {Line2}]";
         }
     }
 }

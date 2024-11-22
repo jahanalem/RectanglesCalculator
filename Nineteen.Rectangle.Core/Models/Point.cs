@@ -15,32 +15,12 @@
 
         public bool Equals(IPoint? other)
         {
-            if (other == null)
-            {
-                return false;
-            }
-
-            return X == other.X && Y == other.Y;
+            return ReferenceEquals(this, other) || (other is not null && X == other.X && Y == other.Y);
         }
 
         public override bool Equals(object? obj)
         {
-            if (obj == null)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj is Point otherPoint)
-            {
-                return Equals(otherPoint);
-            }
-
-            return false;
+            return ReferenceEquals(this, obj) || (obj is Point otherPoint && Equals(otherPoint));
         }
 
         public override int GetHashCode()
