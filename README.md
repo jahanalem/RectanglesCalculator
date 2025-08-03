@@ -570,3 +570,190 @@ Jetzt ruft der Algorithmus `GetMatchingXGroups(..., 6, 7)` auf.
 Die Methode gibt eine Liste zurück, die **nur die relevanten Gruppen** enthält. In unserem Beispiel wäre das eine Liste, die nur das `KeyValuePair` für die Ebene `Y=3` enthält.
 
 Der Haupt-Algorithmus in `FindPotentialRectangles` muss jetzt nicht mehr alle 5 oder 10 Y-Gruppen durchsuchen. Er durchsucht **nur noch die eine Gruppe**, die ihm diese Methode als vielversprechend geliefert hat. Dies reduziert die Anzahl der Vergleiche dramatisch und ist der Hauptgrund für die hohe Geschwindigkeit des Programms.
+
+-----
+
+## Dokumentation: Die Klasse `Rectangle`
+
+Diese Klasse ist mehr als nur ein einfacher Behälter für zwei Linien. Sie ist eine intelligente Struktur, die sehr schnell und zuverlässig arbeiten kann. Sie weiß, wie man sich selbst mit anderen Rechtecken vergleicht und wie man sich für schnelle Suchen vorbereitet.
+
+### Die "geheimen Zutaten": `HashSeed` und `HashFactor`
+
+Ganz oben in der Klasse finden wir diese zwei Zeilen:
+
+```csharp
+private const int HashSeed = 19;
+private const int HashFactor = 31;
+```
+
+  * **Was sind das?** Das sind zwei feste Zahlen, die wir für eine spezielle Berechnung benutzen: den `GetHashCode`. Man kann sie sich als "Start-Zutat" (`HashSeed`) und "Misch-Faktor" (`HashFactor`) vorstellen.
+  * **Warum die Zahlen 19 und 31?** Das sind **Primzahlen**. Programmierer benutzen oft Primzahlen für Hash-Berechnungen. Der Grund ist mathematisch, aber die einfache Erklärung ist: Primzahlen helfen dabei, die Ergebnisse besser zu "mischen". Das reduziert die Wahrscheinlichkeit, dass zwei **verschiedene** Rechtecke zufällig denselben Hash-Code bekommen. Das macht unser `Dictionary` und `HashSet` schneller und zuverlässiger. Die genauen Zahlen sind nicht heilig, aber kleine Primzahlen sind eine gute und bewährte Wahl.
+
+-----
+
+### Das "schlaue Gedächtnis": Caching
+
+Diese Klasse muss oft die gleichen, teuren Berechnungen durchführen. Um Zeit zu sparen, hat sie ein "Gedächtnis" (Cache).
+
+```csharp
+private Point[]? _cachedOrderedPoints;
+private int? _cachedHashCode;
+private string? _cachedString;
+```
+
+  * **Was ist das?** Das sind private Felder, die ein Ergebnis speichern, nachdem es **einmal** berechnet wurde.
+  * **Wie funktioniert es?** Wenn eine Methode wie `GetHashCode()` aufgerufen wird, prüft sie zuerst: "Habe ich dieses Ergebnis schon im Gedächtnis?"
+      * **Ja:** Super, ich gebe einfach den gespeicherten Wert zurück. (Sehr schnell\!)
+      * **Nein:** Okay, ich berechne das Ergebnis, speichere es in meinem Gedächtnis für das nächste Mal und gebe es dann zurück. (Dauert beim ersten Mal länger.)
+  * Das ist eine sehr starke Optimierungstechnik\! 🚀
+
+-----
+
+### Die Methoden: Die Werkzeuge der Klasse
+
+#### 1\. Die Methode `GetOrderedPoints()`
+
+```csharp
+public IEnumerable<Point> GetOrderedPoints()
+{
+    if (_cachedOrderedPoints != null)
+        return _cachedOrderedPoints;
+    // ...
+}
+```
+
+  * **Was sie tut:** Diese Methode gibt die vier Eckpunkte des Rechtecks zurück, aber immer in einer **festen, sortierten Reihenfolge**.
+  * **Warum ist das wichtig?** Ein Rechteck kann auf verschiedene Weisen erstellt werden (Linie A + B oder Linie B + A). Aber am Ende ist es dasselbe Rechteck. Durch das Sortieren der Punkte (zuerst nach X, dann nach Y) stellen wir sicher, dass jedes Rechteck eine **eindeutige Identität** hat. Das ist die Grundlage für zuverlässige Vergleiche.
+  * **Wie sie Caching nutzt:** Sie prüft zuerst, ob die sortierten Punkte schon im `_cachedOrderedPoints`-Gedächtnis liegen. Wenn ja, gibt sie diese sofort zurück.
+
+#### 2\. Die Methode `Equals()`
+
+```csharp
+public bool Equals(IRectangle? other)
+{
+    // ...
+    var thisPoints = GetOrderedPoints();
+    var otherPoints = other.GetOrderedPoints();
+    return thisPoints.SequenceEqual(otherPoints);
+}
+```
+
+  * **Was sie tut:** Sie vergleicht, ob dieses Rechteck mit einem anderen (`other`) identisch ist.
+  * **Wie sie funktioniert:** Sie ist sehr schlau. Sie sagt nicht "Sind Linie1 und Linie2 gleich?". Stattdessen fragt sie:
+    1.  Gib mir die sortierten Punkte von mir selbst.
+    2.  Gib mir die sortierten Punkte des anderen Rechtecks.
+    3.  Sind diese beiden sortierten Listen exakt gleich? (`SequenceEqual` prüft das.)
+  * Dank `GetOrderedPoints` ist dieser Vergleich **100% zuverlässig**, egal wie die Rechtecke ursprünglich erstellt wurden.
+
+#### 3\. Die Methode `GetHashCode()`
+
+
+Ein `HashCode` ist wie ein **digitaler Fingerabdruck** für ein Objekt. Jedes Objekt bekommt eine fast einzigartige Nummer. Datenstrukturen wie `HashSet` oder `Dictionary` benutzen diesen Fingerabdruck, um Objekte blitzschnell zu finden. Diese Methode stellt sicher, dass unser Fingerabdruck für das `Rectangle`-Objekt korrekt, konsistent und schnell erstellt wird.
+
+**Der Code:**
+
+```csharp
+public override int GetHashCode()
+{
+    // Schritt 1: Prüfung des Gedächtnisses (Cache)
+    if (_cachedHashCode.HasValue)
+        return _cachedHashCode.Value;
+
+    // Schritt 2: Der sichere Rechenbereich
+    unchecked
+    {
+        // Schritt 3: Die Start-Zutat
+        int hash = HashSeed; 
+
+        // Schritt 4: Das Vermischen der Zutaten
+        foreach (var point in GetOrderedPoints())
+        {
+            hash = hash * HashFactor + point.GetHashCode();
+        }
+
+        // Schritt 5: Das Ergebnis im Gedächtnis speichern
+        _cachedHashCode = hash;
+
+        // Schritt 6: Das Ergebnis zurückgeben
+        return hash;
+    }
+}
+```
+
+-----
+
+### Analyse der Schritte im Detail
+
+#### Schritt 1: Prüfung des Gedächtnisses (Cache)
+
+```csharp
+if (_cachedHashCode.HasValue)
+    return _cachedHashCode.Value;
+```
+
+  * **Was passiert hier?** Bevor die Methode irgendeine Arbeit macht, schaut sie in ihr "Gedächtnis" (`_cachedHashCode`). `HasValue` prüft, ob dort schon ein Wert gespeichert ist.
+  * **Warum?** Die Berechnung eines Hash-Codes kann (ein bisschen) teuer sein, besonders wenn sie oft aufgerufen wird. Wenn wir den Wert schon einmal berechnet haben, gibt es keinen Grund, es nochmal zu tun.
+  * **Ergebnis:** Wenn schon ein Wert da ist, wird er sofort zurückgegeben. Das ist extrem schnell. Die Methode endet hier.
+
+-----
+
+#### Schritt 2: Der `unchecked` Block
+
+```csharp
+unchecked
+{
+    // ... Berechnungen ...
+}
+```
+
+  * **Was ist das?** In C\# wird standardmäßig geprüft, ob eine mathematische Operation zu einer zu großen Zahl führt (einem sogenannten "Overflow"). Wenn das passiert, gibt es einen Fehler und das Programm stürzt ab.
+  * **Warum benutzen wir `unchecked`?** Bei der Berechnung von Hash-Codes **wollen** wir, dass die Zahlen überlaufen. Es ist ein Teil des "Misch"-Prozesses. Wenn die Zahl zu groß für eine `int` wird, soll sie einfach wieder am Anfang des Zahlenbereichs (im negativen Bereich) weitermachen. `unchecked` sagt dem Programm: "Schalte diese Sicherheitsprüfung für den folgenden Code-Block aus. Ich weiß, was ich tue. Kein Absturz bei einem Overflow."
+
+-----
+
+#### Schritt 3: Die Start-Zutat (`HashSeed`)
+
+```csharp
+int hash = HashSeed;
+```
+
+  * **Was passiert hier?** Wir deklarieren eine neue Variable namens `hash` und geben ihr einen Startwert. Dieser Startwert ist unsere Konstante `HashSeed` (die Zahl 19).
+  * **Warum?** Wir brauchen einen Anfangspunkt für unsere Berechnung. Wir können nicht mit Null anfangen, weil das zu schlechteren, weniger einzigartigen Hash-Codes führen würde, besonders wenn einer der Punkte den Hash-Code Null hat. Eine Primzahl wie 19 ist ein viel besserer, "zufälligerer" Startpunkt.
+
+-----
+
+#### Schritt 4: Das Vermischen (`foreach`-Schleife)
+
+```csharp
+foreach (var point in GetOrderedPoints())
+{
+    hash = hash * HashFactor + point.GetHashCode();
+}
+```
+
+  * Das ist die **Koch-Anleitung** für unseren Fingerabdruck.
+  * **`foreach (var point in GetOrderedPoints())`**: Die Schleife geht durch die vier Eckpunkte des Rechtecks. Wichtig ist, dass `GetOrderedPoints()` die Punkte immer in derselben, sortierten Reihenfolge zurückgibt. Das garantiert, dass **gleiche Rechtecke immer den gleichen Hash-Code** bekommen.
+  * **`hash = hash * HashFactor + point.GetHashCode();`**: Das ist die magische Formel. Bei jeder Wiederholung passiert Folgendes:
+    1.  Nimm den aktuellen `hash`-Wert.
+    2.  Multipliziere ihn mit unserem `HashFactor` (der Primzahl 31). Das "streckt" und verteilt die Bits der Zahl.
+    3.  Hole den eigenen Fingerabdruck (`GetHashCode()`) des aktuellen `point`.
+    4.  Addiere diesen Punkt-Fingerabdruck zum Ergebnis.
+  * **Beispiel-Ablauf:**
+      * **Start:** `hash = 19`
+      * **Punkt 1:** `hash = (19 * 31) + hash_von_punkt1`
+      * **Punkt 2:** `hash = (aktueller_hash * 31) + hash_von_punkt2`
+      * **Punkt 3:** `hash = (aktueller_hash * 31) + hash_von_punkt3`
+      * **Punkt 4:** `hash = (aktueller_hash * 31) + hash_von_punkt4`
+  * Am Ende dieser Schleife haben wir eine finale Zahl, die auf einzigartige Weise von allen vier Punkten und ihrer Reihenfolge beeinflusst wurde.
+
+-----
+
+#### Schritt 5 & 6: Speichern und Zurückgeben
+
+```csharp
+_cachedHashCode = hash;
+return hash;
+```
+
+  * **`_cachedHashCode = hash;`**: Bevor wir das Ergebnis zurückgeben, speichern wir es in unserem Gedächtnis. Beim nächsten Aufruf dieser Methode wird Schritt 1 diesen Wert finden und sofort zurückgeben.
+  * **`return hash;`**: Wir geben den finalen, berechneten Fingerabdruck zurück.
