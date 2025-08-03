@@ -757,3 +757,92 @@ return hash;
 
   * **`_cachedHashCode = hash;`**: Bevor wir das Ergebnis zurückgeben, speichern wir es in unserem Gedächtnis. Beim nächsten Aufruf dieser Methode wird Schritt 1 diesen Wert finden und sofort zurückgeben.
   * **`return hash;`**: Wir geben den finalen, berechneten Fingerabdruck zurück.
+
+-----
+
+## Dokumentation: Die Klasse `Line`
+
+Diese Klasse repräsentiert eine einfache Linie zwischen zwei Punkten. Aber sie hat eine sehr wichtige Eigenschaft: Die Reihenfolge der Punkte spielt keine Rolle. Eine Linie von Punkt A nach B ist dieselbe wie eine Linie von B nach A. Der Code in dieser Klasse sorgt dafür, dass das Programm das auch so versteht.
+
+### Die Methode `Equals`
+
+Diese Methode prüft, ob zwei Linien identisch sind. Es gibt zwei `Equals`-Methoden, schauen wir sie uns an.
+
+#### 1\. `public override bool Equals(object? obj)`
+
+```csharp
+public override bool Equals(object? obj)
+{
+    return ReferenceEquals(this, obj) || (obj is Line otherLine && Equals(otherLine));
+}
+```
+
+  * Diese Methode ist der allgemeine Einstiegspunkt für Vergleiche.
+  * **`ReferenceEquals(this, obj)`**: Das ist der **schnellste Check**. Er fragt: "Zeigen diese beiden Variablen (`this` und `obj`) auf **exakt dasselbe Objekt** im Speicher des Computers?"
+      * Wenn ja, dann sind sie zu 100% gleich. Die Methode gibt sofort `true` zurück und ist fertig. Das spart Zeit.
+  * **`||` (ODER)**: Wenn `ReferenceEquals` `false` ist, geht es hier weiter.
+  * **`obj is Line otherLine && Equals(otherLine)`**: Das prüft zwei Dinge:
+    1.  `obj is Line otherLine`: Ist das andere Objekt (`obj`) überhaupt eine `Line`? Wenn nicht, können sie nicht gleich sein. Wenn es eine `Line` ist, wird es in der neuen Variable `otherLine` gespeichert.
+    2.  `&& Equals(otherLine)`: Wenn es eine `Line` ist, wird die **andere, spezifischere `Equals`-Methode** (die wir als nächstes besprechen) aufgerufen, um den eigentlichen Wertvergleich zu machen.
+
+#### 2\. `public bool Equals(Line? other)`
+
+```csharp
+public bool Equals(Line? other)
+{
+    if (other is null)
+    {
+        return false;
+    }
+
+    return Point1.Equals(other.Point1) && Point2.Equals(other.Point2) || 
+           Point1.Equals(other.Point2) && Point2.Equals(other.Point1);
+}
+```
+
+  * Das ist die **Kernlogik** des Vergleichs.
+  * Die Bedingung prüft beide möglichen Anordnungen der Punkte:
+      * **Teil 1:** `Point1.Equals(other.Point1) && Point2.Equals(other.Point2)`
+          * Ist mein erster Punkt gleich dem ersten Punkt der anderen Linie UND mein zweiter Punkt gleich dem zweiten?
+      * `||` **(ODER)**
+      * **Teil 2:** `Point1.Equals(other.Point2) && Point2.Equals(other.Point1)`
+          * Ist mein erster Punkt gleich dem zweiten Punkt der anderen Linie UND mein zweiter Punkt gleich dem ersten? (Der "über Kreuz"-Vergleich)
+  * Wenn einer dieser beiden Teile `wahr` ist, sind die Linien gleich. Damit stellen wir sicher, dass `Line(A, B)` und `Line(B, A)` als identisch angesehen werden.
+
+-----
+
+### Die Methode `GetHashCode()`
+
+```csharp
+public override int GetHashCode()
+{
+    int hashPoint1 = Point1.GetHashCode();
+    int hashPoint2 = Point2.GetHashCode();
+
+    return hashPoint1 ^ hashPoint2;
+}
+```
+
+  * Diese Methode muss eine Regel befolgen: Wenn zwei Objekte laut `Equals` gleich sind, **müssen** sie auch denselben Hash-Code haben.
+  * Wie erreichen wir das, wenn die Reihenfolge der Punkte egal ist? Mit einem cleveren mathematischen Trick: dem **XOR-Operator `^`**.
+
+#### Was ist `^` (XOR) und wie funktioniert es?
+
+  * `^` steht für "Exklusives ODER". Es ist eine bitweise Operation. Die einfache Erklärung ist: Es ist eine Art von Addition, bei der die Reihenfolge keine Rolle spielt.
+  * Es hat die Eigenschaft: `A ^ B` ist **immer** dasselbe Ergebnis wie `B ^ A`.
+
+**Beispiel:**
+
+  * Nehmen wir an, `Point1.GetHashCode()` gibt die Zahl **10** zurück.
+
+  * Und `Point2.GetHashCode()` gibt die Zahl **25** zurück.
+
+  * **Fall A:** `Line(Point1, Point2)`
+
+      * `10 ^ 25` ergibt einen bestimmten Wert (z.B. 19).
+
+  * **Fall B:** `Line(Point2, Point1)`
+
+      * `25 ^ 10` ergibt **exakt denselben Wert** (19).
+
+Dank des `^` Operators produzieren `Line(A, B)` und `Line(B, A)` denselben Hash-Code. Damit ist die Regel erfüllt und unser `HashSet` oder `Dictionary` funktioniert perfekt und zuverlässig mit unseren `Line`-Objekten. ✨
