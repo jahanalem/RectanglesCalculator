@@ -8,7 +8,7 @@ namespace Nineteen.Rectangle.Core.Utilities
         public static List<Point> GeneratePoints(
             int count,
             int maxX = 100,
-            int maxY = 100)
+            int maxY = 100, string fileName = "generated_points.json")
         {
             var random = new Random();
             var points = new HashSet<Point>();
@@ -22,7 +22,7 @@ namespace Nineteen.Rectangle.Core.Utilities
             var pointList = points.ToList();
 
             var dataSaver = new DataSaver();
-            string filePath = "generated_points.json";
+            string filePath = fileName;
             dataSaver.SavePoints(pointList, filePath);
 
             return pointList;

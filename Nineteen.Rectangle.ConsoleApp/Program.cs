@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 class Program
 {
-    private static readonly string DataFilePath = "data_points_10000.json";
+    private static readonly string DataFilePath = "data_points_16.json";
     private static readonly string JsonFilePath = "rectangles.json";
     private static readonly FileOperations fileOperations = new FileOperations();
 
@@ -24,6 +24,8 @@ class Program
             return;
         }
 
+        UserInterface.ProcessingStartMessage();
+
         Stopwatch stopwatch = Stopwatch.StartNew();
         var (distinctRectangles, allDistinctPointsCount) = ProcessPoints(allPoints);
         stopwatch.Stop();
@@ -34,16 +36,16 @@ class Program
     private static List<Point> LoadPoints()
     {
         var allPoints = fileOperations.GetPointsFromFile(DataFilePath);
+
         // Alternative data sources could be uncommented as needed
         // var allPoints = BigData.POINTS;
-        // var allPoints = TestDataGenerator.GeneratePoints(1000);
+        //var allPoints = TestDataGenerator.GeneratePoints(50000, 1000, 1000, "data_points_50000.json");
 
         return allPoints;
     }
 
     private static (List<IRectangle>, long) ProcessPoints(List<Point> allPoints)
     {
-        UserInterface.ProcessingStartMessage();
         var allDistinctPoints = allPoints.Distinct().ToList();
         var distinctRectangles = DataProcessor.ProcessData(allDistinctPoints);
         return (distinctRectangles, allDistinctPoints.LongCount());

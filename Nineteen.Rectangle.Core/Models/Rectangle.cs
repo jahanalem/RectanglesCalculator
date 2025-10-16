@@ -24,7 +24,7 @@
                 return _cachedOrderedPoints;
 
             _cachedOrderedPoints = new[] { Line1.Point1, Line1.Point2, Line2.Point1, Line2.Point2 };
-            Array.Sort(_cachedOrderedPoints, static (p1, p2) => (p1.X, p1.Y).CompareTo((p2.X, p2.Y)));
+            Array.Sort(_cachedOrderedPoints, (p1, p2) => (p1.X, p1.Y).CompareTo((p2.X, p2.Y)));
 
             return _cachedOrderedPoints;
         }
