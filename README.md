@@ -5,7 +5,7 @@ Dieses Dokument erklärt Schritt für Schritt einen Algorithmus. Der Algorithmus
 Ich habe dieses Projekt auch mit Golang (Go) implementiert und anschließend die Performance beider Projekte gemessen und miteinander verglichen.
 Für weitere Informationen kannst du diesen Link ansehen:
 
-[go-rectangles: https://github.com/jahanalem/go-rectangles]([https://github.com/jahanalem/go-rectangles](https://github.com/jahanalem/go-rectangles?tab=readme-ov-file#go-rectangles-a-performance-comparison-with-c)
+[go-rectangles: https://github.com/jahanalem/go-rectangles](https://github.com/jahanalem/go-rectangles?tab=readme-ov-file#go-rectangles-a-performance-comparison-with-c)
 
 ## Eingabedaten (Beispiel)
 
